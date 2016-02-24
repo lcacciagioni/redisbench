@@ -4,7 +4,7 @@ import "fmt"
 import "flag"
 import "strconv"
 import "math/rand"
-import "unsafe"
+
 import "time"
 import "log"
 
@@ -24,9 +24,8 @@ func RandStringBytes(n int) string {
 
 // RandRange returns a random string with using the min and max values as limit.
 func RandRange(min, max int) string {
-	garbage := RandStringBytes(min)
-	garbage += RandStringBytes(max - min)
-	return garbage
+	randsize := rand.Intn(max - min)
+	return RandStringBytes(min + randsize)
 }
 
 func main() {
@@ -46,21 +45,15 @@ func main() {
 	}
 	defer c.Close()
 
-	UsedMemory := uint64(0)
-
 	fmt.Println("Starting SET")
 	startSet := time.Now()
 	for i := 0; i <= *numOfMsgPtr; i++ {
 		rediskey := "message" + strconv.Itoa(i)
 		message := RandRange(*minMsgSizePtr, *maxMsgSizePtr)
-		UsedMemory += uint64(unsafe.Sizeof(message))
-		fmt.Println(message)
 		//set
 		c.Do("SET", rediskey, message)
 	}
 	fmt.Println("SET of ", strconv.Itoa(*numOfMsgPtr), " random messages has taken:", time.Since(startSet))
-	fmt.Println("Total memory in SET:", UsedMemory)
-	fmt.Println("Average Object Size:", UsedMemory/uint64(*numOfMsgPtr))
 
 	fmt.Println("Starting GET")
 	startGet := time.Now()
