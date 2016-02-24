@@ -4,7 +4,10 @@ import "fmt"
 import "flag"
 import "strconv"
 import "math/rand"
+import "unsafe"
+import "time"
 import "log"
+
 import "github.com/garyburd/redigo/redis"
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -19,33 +22,56 @@ func RandStringBytes(n int) string {
 	return string(b)
 }
 
+// RandRange returns a random string with using the min and max values as limit.
+func RandRange(min, max int) string {
+	garbage := RandStringBytes(min)
+	garbage += RandStringBytes(max - min)
+	return garbage
+}
+
 func main() {
 	minMsgSizePtr := flag.Int("minMsgSize", 100, "The minimun size of the massages to send in bytes")
 	maxMsgSizePtr := flag.Int("maxMsgSize", 1000, "The maximun size of the massages to send in bytes")
-	numOfMsgPtr := flag.Int("NumOfMsg", 10000, "The number of messages to send")
+	numOfMsgPtr := flag.Int("numOfMsg", 10000, "The number of messages to send")
+	redisHostPtr := flag.String("redisHost", "localhost", "The host where redis is located.")
+	redisPortPtr := flag.Int("redisPort", 6379, "The port where redis is listening")
+	flag.Parse()
 	if *minMsgSizePtr > *maxMsgSizePtr {
 		log.Fatalln("minMsgSize (", *minMsgSizePtr, ")can't be bigger than maxMsgSize (", *maxMsgSizePtr, ").")
 	}
-	// declare the valid range
-	validSizeRange := *maxMsgSizePtr - *minMsgSizePtr
 	//INIT OMIT
-	c, err := redis.Dial("tcp", ":6379")
+	c, err := redis.Dial("tcp", *redisHostPtr+":"+strconv.Itoa(*redisPortPtr))
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 	defer c.Close()
-	i := 0
-	for i <= *numOfMsgPtr {
+
+	UsedMemory := uint64(0)
+
+	fmt.Println("Starting SET")
+	startSet := time.Now()
+	for i := 0; i <= *numOfMsgPtr; i++ {
+		rediskey := "message" + strconv.Itoa(i)
+		message := RandRange(*minMsgSizePtr, *maxMsgSizePtr)
+		UsedMemory += uint64(unsafe.Sizeof(message))
+		fmt.Println(message)
 		//set
-		c.Do("SET", strconv.Itoa(i), "Hello World")
+		c.Do("SET", rediskey, message)
 	}
+	fmt.Println("SET of ", strconv.Itoa(*numOfMsgPtr), " random messages has taken:", time.Since(startSet))
+	fmt.Println("Total memory in SET:", UsedMemory)
+	fmt.Println("Average Object Size:", UsedMemory/uint64(*numOfMsgPtr))
 
-	//get
-	world, err := redis.String(c.Do("GET", "message1"))
-	if err != nil {
-		fmt.Println("key not found")
+	fmt.Println("Starting GET")
+	startGet := time.Now()
+	for j := 0; j <= *numOfMsgPtr; j++ {
+		rediskey := "message" + strconv.Itoa(j)
+		//get
+		_, err := redis.String(c.Do("GET", rediskey))
+		if err != nil {
+			fmt.Println("key not found")
+		}
 	}
-
-	fmt.Println(world)
+	fmt.Println("GET of ", strconv.Itoa(*numOfMsgPtr), " random messages has taken:", time.Since(startGet))
 	//ENDINIT OMIT
 }
