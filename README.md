@@ -6,3 +6,4 @@ A POC of a stress tester for redis in golang
 * test
 * cluster aware
 * bynary data
+* more information to be displayed
