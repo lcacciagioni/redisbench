@@ -1,5 +1,17 @@
 # redisbench
-A POC of a stress tester for redis in golang
+A POC of a stress tester for redis in golang. Implemented using [redigo](https://github.com/garyburd/redigo) and [redis-go-cluster](https://github.com/chasex/redis-go-cluster).
+
+### Usage
+Single node (Default mode)
+```bash
+$ redisbench -redisNodes=192.168.1.2:6379
+```
+Cluster
+```bash
+$ redisbench -redisNodes=127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381
+```
+
+For more information about options run `$ redisbench -help`
 
 ## TODO
 

@@ -1,7 +1,12 @@
 {
-	"ImportPath": "github.com/redisbench",
+	"ImportPath": "github.com/lcacciagioni/redisbench",
 	"GoVersion": "go1.6",
 	"Deps": [
+		{
+			"ImportPath": "github.com/chasex/redis-go-cluster",
+			"Comment": "v1.0.0-9-g7cf243a",
+			"Rev": "7cf243aabf65070b189cf851b6d20a034fd8cacd"
+		},
 		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
 			"Rev": "836b6e58b3358112c8291565d01c35b8764070d7"

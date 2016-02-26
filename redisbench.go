@@ -3,10 +3,10 @@ package main
 import "flag"
 import "strconv"
 import "math/rand"
-
+import "fmt"
 import "time"
 import "log"
-
+import "os"
 import "strings"
 import redigo "github.com/garyburd/redigo/redis"
 import redigocluster "github.com/chasex/redis-go-cluster"
@@ -117,13 +117,23 @@ func StressNode(host string, minMsgSize, maxMsgSize, numOfMsg int) {
 }
 
 func main() {
+	flag.Usage = func() {
+		fmt.Printf("Usage: redisbench [options]\n\n")
+		flag.PrintDefaults()
+	}
 	minMsgSizePtr := flag.Int("minMsgSize", 100, "The minimun size of the massages to send in bytes")
 	maxMsgSizePtr := flag.Int("maxMsgSize", 1000, "The maximun size of the massages to send in bytes")
 	numOfMsgPtr := flag.Int("numOfMsg", 10000, "The number of messages to send")
 	redisNodes := flag.String("redisNodes", "127.0.0.1:6379", "Cluster nodes declaration splitted by comma.")
+	help := flag.Bool("help", false, "This help.")
 	flag.Parse()
 	if *minMsgSizePtr > *maxMsgSizePtr {
 		log.Fatalln("minMsgSize (", *minMsgSizePtr, ")can't be bigger than maxMsgSize (", *maxMsgSizePtr, ").")
+	}
+
+	if *help {
+		flag.Usage()
+		os.Exit(0)
 	}
 
 	if len(strings.Split(*redisNodes, ",")) == 1 {
