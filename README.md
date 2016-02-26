@@ -17,10 +17,11 @@ For more information about options run `$ redisbench -help`
 
 * [ ] test
 * [x]cluster aware
-  * I have tested only locally with docker-compose so if any of you can test it a little more is welcome.
 * [ ] bynary data maybe using `[]byte('str')` in place of a string
 * [ ] more information to be displayed
 * [x]optimizations to randomization of strings
-  * God save [stackoverflow](https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-golang/)
 
-> All PR are welcome is nice to know that this can be useful for someone else.
+> God save [stackoverflow](https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-golang/) for providing the strings randomization just in time.
+
+### Bugs and Improvements
+All the contributions are welcome is nice to know that this can be useful for someone else.
