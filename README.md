@@ -15,10 +15,12 @@ For more information about options run `$ redisbench -help`
 
 ## TODO
 
+The following points are what from my point of view we need to have before having the first beta version. 
+
 * [ ] test
 * [x] cluster aware
-* [ ] bynary data maybe using `[]byte('str')` in place of a string
-* [ ] more information to be displayed
+* [x] bynary data maybe using `[]byte('str')` in place of a string
+* [ ] more information to be displayed - [WIP]
 * [x] optimizations to randomization of strings
 
 > God save [stackoverflow](https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-golang/) for providing the strings randomization just in time.
