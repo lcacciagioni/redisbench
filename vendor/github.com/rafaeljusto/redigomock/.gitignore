@@ -21,10 +21,3 @@ _testmain.go
 
 *.exe
 *.test
-*.prof
-
-# Build
-/redisbench
-
-# Cover
-*.coverprofile

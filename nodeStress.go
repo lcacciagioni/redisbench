@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"strconv"
 	"time"
 
@@ -42,7 +41,6 @@ func NodeStressString(c redigo.Conn, numOfMsg, minMsgSize, maxMsgSize int) *Stre
 		}
 		if err != nil {
 			result.lostKeys++
-			log.Println("key not found")
 		}
 	}
 	return result
@@ -82,7 +80,6 @@ func NodeStressBytes(c redigo.Conn, numOfMsg, minMsgSize, maxMsgSize int) *Stres
 		}
 		if err != nil {
 			result.lostKeys++
-			log.Println("key not found")
 		}
 	}
 	return result
