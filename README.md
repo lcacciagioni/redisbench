@@ -1,4 +1,7 @@
 # redisbench
+
+[![Build Status](https://drone.io/github.com/lcacciagioni/redisbench/status.png)](https://drone.io/github.com/lcacciagioni/redisbench/latest)
+
 A POC of a stress tester for redis in golang. Implemented using [redigo](https://github.com/garyburd/redigo) and [redis-go-cluster](https://github.com/chasex/redis-go-cluster).
 
 ### Usage
@@ -15,9 +18,9 @@ For more information about options run `$ redisbench -help`
 
 ## TODO
 
-The following points are what from my point of view we need to have before having the first beta version. 
+The following points are what from my point of view we need to have before having the first beta version.
 
-* [ ] test
+* [x] test
 * [x] cluster aware
 * [x] bynary data maybe using `[]byte('str')` in place of a string
 * [ ] more information to be displayed - [WIP]
