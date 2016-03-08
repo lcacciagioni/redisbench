@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"strconv"
 	"time"
 
@@ -42,7 +41,6 @@ func ClusterStressString(c redigocluster.Cluster, minMsgSize, maxMsgSize, numOfM
 		}
 		if err != nil {
 			result.lostKeys++
-			log.Println("key not found")
 		}
 	}
 	return result
@@ -82,7 +80,6 @@ func ClusterStressBytes(c redigocluster.Cluster, minMsgSize, maxMsgSize, numOfMs
 		}
 		if err != nil {
 			result.lostKeys++
-			log.Println("key not found")
 		}
 	}
 	return result
