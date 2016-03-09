@@ -1,6 +1,6 @@
 # redisbench
 
-[![Build Status](https://drone.io/github.com/lcacciagioni/redisbench/status.png)](https://drone.io/github.com/lcacciagioni/redisbench/latest)
+[![Build Status](https://drone.io/github.com/lcacciagioni/redisbench/status.png)](https://drone.io/github.com/lcacciagioni/redisbench/latest) | [![codecov.io](https://codecov.io/github/lcacciagioni/redisbench/coverage.svg?branch=master)](https://codecov.io/github/lcacciagioni/redisbench?branch=master)
 
 A POC of a stress tester for redis in golang. Implemented using [redigo](https://github.com/garyburd/redigo) and [redis-go-cluster](https://github.com/chasex/redis-go-cluster).
 
