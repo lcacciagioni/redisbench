@@ -63,8 +63,14 @@ func main() {
 	}
 
 	if len(strings.Split(*redisNodes, ",")) == 1 {
-		StressNode(*redisNodes, *minMsgSizePtr, *maxMsgSizePtr, *numOfMsgPtr)
+		err := StressNode(*redisNodes, *minMsgSizePtr, *maxMsgSizePtr, *numOfMsgPtr)
+		if err != nil {
+			log.Fatal(err)
+		}
 	} else {
-		StressCluster(strings.Split(*redisNodes, ","), *minMsgSizePtr, *maxMsgSizePtr, *numOfMsgPtr)
+		err := StressCluster(strings.Split(*redisNodes, ","), *minMsgSizePtr, *maxMsgSizePtr, *numOfMsgPtr)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }

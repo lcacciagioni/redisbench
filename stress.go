@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	redigocluster "github.com/chasex/redis-go-cluster"
@@ -10,7 +9,7 @@ import (
 )
 
 // StressCluster is a simple function to stress test a redis cluster
-func StressCluster(hosts []string, minMsgSize, maxMsgSize, numOfMsg int) {
+func StressCluster(hosts []string, minMsgSize, maxMsgSize, numOfMsg int) error {
 	c, err := redigocluster.NewCluster(&redigocluster.Options{
 		StartNodes:   hosts,
 		ConnTimeout:  50 * time.Millisecond,
@@ -20,24 +19,26 @@ func StressCluster(hosts []string, minMsgSize, maxMsgSize, numOfMsg int) {
 		AliveTime:    60 * time.Second,
 	})
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	fmt.Println("=====STRINGS=====")
 	printResult(ClusterStressString(*c, minMsgSize, maxMsgSize, numOfMsg), numOfMsg)
 	fmt.Println("=====BYTES=====")
 	printResult(ClusterStressBytes(*c, minMsgSize, maxMsgSize, numOfMsg), numOfMsg)
+	return nil
 }
 
 // StressNode is fuction that executes a series of stress tests in a sigle node
 // of redis
-func StressNode(host string, minMsgSize, maxMsgSize, numOfMsg int) {
+func StressNode(host string, minMsgSize, maxMsgSize, numOfMsg int) error {
 	c, err := redigo.Dial("tcp", host)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	defer c.Close()
 	fmt.Println("=====STRINGS=====")
 	printResult(NodeStressString(c, numOfMsg, minMsgSize, maxMsgSize), numOfMsg)
 	fmt.Println("=====BYTES=====")
 	printResult(NodeStressBytes(c, numOfMsg, minMsgSize, maxMsgSize), numOfMsg)
+	return nil
 }
